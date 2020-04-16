@@ -26,17 +26,20 @@ var myinterval;
 //the chart is from canvas.js library.
 function loadChart(){
     
+    //All information/data needed to start the chart
     var arrForChart = getFromSessionStorage('toggledCoins').toggledArray;
     var coinsString = createCoinsString(arrForChart);
     getCoinsPrices(coinsString);
     var currentPrices = getFromSessionStorage('pricesForChart');
 
+    //five data arrays for max of five coins selected in toggle
     var dataCoin1 = [];
     var dataCoin2 = [];
     var dataCoin3 = [];
     var dataCoin4 = [];
     var dataCoin5 = [];
     
+
     var chart = new CanvasJS.Chart("myChart", {
         zoomEnabled: true,
         theme: 'light1',
@@ -103,6 +106,7 @@ function loadChart(){
         },]
     });
 
+    //attaching a name of coin for each line in chart
     arrForChart.forEach((coin , index) => {
         chart.options.data[index].name = `${coin.symbol.toUpperCase()}`;
      });
@@ -117,9 +121,14 @@ function loadChart(){
         chart.render();
     }
 
+    //initializing veriables needed for updateChart and timeline
     var updateInterval = 2000;
     var time = new Date();
 
+    //initializing chart with call for coins prices first time
+    //for each coin in array we make an api call to recieve current price of coin
+    //and pushing the data to the datapoints in chart
+    //important to note that the chart  will display only coins that get an answer from api..not everyone do!
     arrForChart.forEach((coin, index) => {
         getCoinsPrices(coinsString);
         currentPrices = getFromSessionStorage('pricesForChart');
@@ -131,6 +140,10 @@ function loadChart(){
     });
     chart.render();       
 
+    //function that makes a call for the coins prices every two seconds
+    //for each coin in array we make an api call to recieve current price of coin
+    //and pushing the data to the datapoints in chart
+    //important to note that the chart  will display only coins that get an answer from api..not everyone do!
     function updateChart() {
         time.setTime(time.getTime() + updateInterval);
         getCoinsPrices(coinsString);

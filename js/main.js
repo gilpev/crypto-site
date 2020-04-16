@@ -256,6 +256,7 @@ async function homePage(){
 //function that initiates the about-page.
 function aboutPage(){
     clearInterval(myinterval);
+    document.getElementById('parallax').innerHTML = about;
     document.getElementById("homePage").classList.remove("active");
     document.getElementById("liveReportsPage").classList.remove("active");
     document.getElementById("aboutPage").classList.add("active");
@@ -270,7 +271,6 @@ function liveReportsPage(){
     if(getFromSessionStorage('toggledCoins').toggledArray.length == 0){
         noChosenCoinsForChart();
         setTimeout(function(){document.getElementById('errorDiv').innerHTML = '';
-        homePage();
         }, 5000);
     }
     else {
